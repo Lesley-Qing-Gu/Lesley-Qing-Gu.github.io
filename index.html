@@ -2,77 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lesley Qing Gu</title>
   <style>
+    :root {
+      --rainbow: linear-gradient(to right, #e40303, #ff8c00, #ffed00, #008026, #24408e, #732982);
+      --bg-color: #ffffff;
+      --text-color: #333;
+      --accent: #007acc;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 0 auto;
-      padding: 2em;
-      max-width: 800px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      background: #fff;
-      color: #333;
+      font-family: var(--font);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      min-height: 100vh;
     }
-    h1 {
-      font-size: 2.5em;
-      color: #007acc;
+
+    nav {
+      width: 220px;
+      background: var(--rainbow);
+      color: white;
+      padding: 2em 1.2em;
+      flex-shrink: 0;
     }
-    h2 {
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0.3em;
+
+    nav h1 {
+      font-size: 1.8em;
+      line-height: 1.3em;
+      font-weight: bold;
+      margin-bottom: 1.5em;
     }
-    a {
-      color: #007acc;
+
+    nav a {
+      display: block;
+      margin: 0.8em 0;
+      color: white;
       text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
     }
-    a:hover {
-      text-decoration: underline;
+
+    nav a:hover {
+      opacity: 0.8;
     }
-    .section {
-      margin-bottom: 2em;
+
+    main {
+      flex: 1;
+      padding: 2em 3em;
+      max-width: 900px;
     }
-    .social a {
-      margin-right: 1em;
+
+    section {
+      margin-bottom: 2.5em;
+    }
+
+    section h2 {
+      font-size: 1.4em;
+      margin-bottom: 0.4em;
+      border-bottom: 4px solid transparent;
+      border-image: var(--rainbow);
+      border-image-slice: 1;
+      display: inline-block;
+      padding-bottom: 0.2em;
+    }
+
+    ul {
+      margin-top: 0.5em;
+      padding-left: 1.2em;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .email {
+      margin-top: 1em;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
-  <h1>Lesley Qing Gu</h1>
-  <p><strong>MSc in Human-Computer Interaction and Design @ KTH</strong><br>
-  UX Designer · HCI Researcher · Social Robotics Enthusiast</p>
+  <nav>
+    <h1>Lesley<br>Qing Gu</h1>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#research">Research</a>
+    <a href="files/Lesley-Gu-CV.pdf" target="_blank">CV</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-  <div class="social">
-    <a href="mailto:lesley@furhatrobotics.com">📧 Email</a>
-    <a href="https://github.com/Lesley-Qing-Gu">💻 GitHub</a>
-    <a href="https://www.linkedin.com/in/lesleyqinggu">🔗 LinkedIn</a>
-    <a href="files/Lesley-Gu-CV.pdf">📄 CV</a>
-  </div>
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        I'm a design engineer and creative technologist exploring the intersection of HCI, accessibility, and conversational AI.
+        My work spans across interactive systems, social robots, and inclusive technologies. I currently work with the Furhat robot,
+        RFID, DMX lighting, and LLM-powered personas.
+      </p>
+    </section>
 
-  <div class="section">
-    <h2>About Me</h2>
-    <p>I am a design engineer and creative technologist exploring the intersection between HCI, accessibility, and conversational AI. Currently building interactive experiences using the Furhat robot, DMX lighting, and LLM-powered personas.</p>
-  </div>
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li><strong>FitnessNow</strong> – A social fitness dashboard with badges, stats and video workouts.</li>
+        <li><strong>ArtVoyager</strong> – Cross-cultural artwork explorer powered by LLM + Met API.</li>
+        <li><strong>Furhat Persona Switcher</strong> – RFID-triggered robot dialog system with DMX + animations.</li>
+      </ul>
+    </section>
 
-  <div class="section">
-    <h2>Research</h2>
-    <ul>
-      <li><strong>Making LLMs Accessible for Blind Users</strong> – CHI 2025 Workshop (submitted)</li>
-      <li><strong>Persona Switching for Social Robots</strong> – Co-Design with RFID & Multimodal Interfaces</li>
-    </ul>
-  </div>
+    <section id="research">
+      <h2>Research</h2>
+      <ul>
+        <li><strong>Making LLMs Accessible for Blind Users</strong> – CHI 2025 Workshop (submitted).</li>
+        <li><strong>Persona Switching for Social Robots</strong> – Co-Design with RFID & multimodal interfaces.</li>
+      </ul>
+    </section>
 
-  <div class="section">
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>FitnessNow</strong> – A social fitness dashboard with badge system and video workouts</li>
-      <li><strong>ArtVoyager</strong> – Cross-cultural artwork explorer powered by LLM + Met API</li>
-      <li><strong>Furhat Persona Switcher</strong> – RFID-triggered robot dialogue with DMX & animation</li>
-    </ul>
-  </div>
-
-  <div class="section">
-    <h2>Contact</h2>
-    <p>Email me at: <a href="mailto:lesley@furhatrobotics.com">lesley@furhatrobotics.com</a></p>
-  </div>
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="email">📧 Email me at: <a href="mailto:lesley@furhatrobotics.com">lesley@furhatrobotics.com</a></p>
+      <p>
+        <a href="https://github.com/Lesley-Qing-Gu" target="_blank">GitHub</a> · 
+        <a href="https://www.linkedin.com/in/lesleyqinggu" target="_blank">LinkedIn</a>
+      </p>
+    </section>
+  </main>
 </body>
 </html>
