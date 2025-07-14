@@ -6,18 +6,30 @@
   <title>Lesley Qing Gu</title>
   <style>
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      color: white;
-    }
-
-    section {
+      margin: 0 auto;
+      max-width: 800px;
       padding: 60px 20px;
-      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: #ffffff;
+      color: #111;
+      line-height: 1.7;
     }
 
-    h1, h2 {
-      margin-bottom: 0.5em;
+    h1 {
+      font-size: 2.8em;
+      font-weight: 700;
+      margin-bottom: 0.2em;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      font-weight: 600;
+      margin-top: 2.5em;
+      margin-bottom: 0.4em;
+    }
+
+    ul {
+      padding-left: 1.2em;
     }
 
     a {
@@ -25,61 +37,76 @@
       text-decoration: underline;
     }
 
-    .about    { background-color: #E40303; } /* Red */
-    .projects { background-color: #FF8C00; } /* Orange */
-    .research { background-color: #FFED00; color: #000; } /* Yellow - use black text */
-    .hobby    { background-color: #008026; }
-    .cv       { background-color: #24408E; }
-    .contact  { background-color: #732982; }
+    /* Rainbow header colors */
+    .about     { color: #E40303; }
+    .projects  { color: #FF8C00; }
+    .research  { color: #C19A00; } /* slightly darker yellow for readability */
+    .hobby     { color: #008026; }
+    .cv        { color: #24408E; }
+    .contact   { color: #732982; }
 
-    ul {
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: left;
+    .section {
+      margin-bottom: 2em;
+    }
+
+    .email, .links {
+      margin-top: 0.5em;
     }
   </style>
 </head>
 <body>
 
-  <section class="about">
-    <h1>Lesley Qing Gu</h1>
-    <p><strong>MSc in HCI & Design @ KTH</strong><br>
-    UX Designer · HCI Researcher · Social Robotics</p>
-  </section>
+  <h1>Lesley Qing Gu</h1>
+  <p><strong>MSc in HCI & Design @ KTH</strong><br>
+  UX Designer · HCI Researcher · Social Robotics</p>
 
-  <section class="projects">
-    <h2>Projects</h2>
+  <div class="section">
+    <h2 class="about">About</h2>
+    <p>
+      I'm a design engineer and creative technologist exploring the intersection of HCI, accessibility, and conversational AI.
+      My work focuses on building interactive systems with social robots, RFID, DMX lighting, and LLM-powered personas.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2 class="projects">Projects</h2>
     <ul>
-      <li><strong>FitnessNow</strong> – Social fitness dashboard with badges and video workouts.</li>
-      <li><strong>ArtVoyager</strong> – LLM-powered cross-cultural artwork explorer.</li>
-      <li><strong>Furhat Persona Switcher</strong> – RFID-triggered robot dialog system with DMX & animation.</li>
+      <li><strong>FitnessNow</strong> – Social fitness dashboard with badges, stats and video workouts.</li>
+      <li><strong>ArtVoyager</strong> – LLM-powered cross-cultural artwork explorer (Met + Wikidata API).</li>
+      <li><strong>Furhat Persona Switcher</strong> – RFID-triggered robot dialog system with DMX + animation.</li>
     </ul>
-  </section>
+  </div>
 
-  <section class="research">
-    <h2>Research</h2>
+  <div class="section">
+    <h2 class="research">Research</h2>
     <ul>
       <li><strong>Making LLMs Accessible for Blind Users</strong> – CHI 2025 Workshop (submitted).</li>
       <li><strong>Persona Switching for Social Robots</strong> – Co-Design with RFID & multimodal interfaces.</li>
     </ul>
-  </section>
+  </div>
 
-  <section class="hobby">
-    <h2>Hobby</h2>
-    <p>I enjoy cooking experimental dishes, watching Swedish mystery shows, and hacking interactive tech with Arduino and Python!</p>
-  </section>
+  <div class="section">
+    <h2 class="hobby">Hobby</h2>
+    <p>
+      I love experimental cooking, collecting queer cinema, and tinkering with Furhat, DMX lights, and embedded hardware.
+    </p>
+  </div>
 
-  <section class="cv">
-    <h2>CV</h2>
-    <p>📄 <a href="files/Lesley-Gu-CV.pdf" target="_blank">Download my CV</a></p>
-  </section>
+  <div class="section">
+    <h2 class="cv">CV</h2>
+    <p>
+      📄 <a href="files/Lesley-Gu-CV.pdf" target="_blank">Download my CV</a>
+    </p>
+  </div>
 
-  <section class="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:lesley@furhatrobotics.com">lesley@furhatrobotics.com</a></p>
-    <p><a href="https://github.com/Lesley-Qing-Gu" target="_blank">GitHub</a> · 
-       <a href="https://linkedin.com/in/lesleyqinggu" target="_blank">LinkedIn</a></p>
-  </section>
+  <div class="section">
+    <h2 class="contact">Contact</h2>
+    <p class="email">📧 lesley@furhatrobotics.com</p>
+    <p class="links">
+      <a href="https://github.com/Lesley-Qing-Gu" target="_blank">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/lesleyqinggu" target="_blank">LinkedIn</a>
+    </p>
+  </div>
 
 </body>
 </html>
