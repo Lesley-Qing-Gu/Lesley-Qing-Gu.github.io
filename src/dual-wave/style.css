@@ -1,0 +1,68 @@
+.dual-wave-wrapper {
+  display: flex;
+  width: 100%;
+  position: relative;
+  gap: 25vw;
+}
+
+.wave-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  font-size: 5vw;
+  font-weight: 400;
+  line-height: 0.7;
+}
+
+.wave-column-left {
+  align-items: flex-start;
+}
+
+.wave-column-right {
+  align-items: flex-end;
+}
+
+.animated-text {
+  width: max-content;
+  color: #4d4d4d;
+  transition: color 300ms ease-out;
+}
+
+.animated-text.focused {
+  color: white;
+  z-index: 2;
+}
+
+.image-thumbnail-wrapper {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 30vw;
+  height: auto;
+  z-index: 1;
+}
+
+.image-thumbnail {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+/* Mobile - Stack columns vertically */
+@media (max-width: 1023px) {
+  .dual-wave-wrapper {
+    gap: 10vw;
+  }
+
+  .wave-column {
+    gap: 4rem;
+    font-size: 7.5vw;
+  }
+
+  .image-thumbnail-wrapper {
+    width: 50vw;
+  }
+}
