@@ -51,7 +51,6 @@
   object-fit: cover;
 }
 
-/* Mobile - Stack columns vertically */
 @media (max-width: 1023px) {
   .dual-wave-wrapper {
     gap: 10vw;

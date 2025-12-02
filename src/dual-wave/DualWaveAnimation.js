@@ -87,6 +87,14 @@ export class DualWaveAnimation {
           gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
         );
 
+        // Create quick setter for thumbnail
+        if (this.thumbnail) {
+          this.thumbnailQuickY = gsap.quickTo(this.thumbnail, "y", {
+            duration: 0.6,
+            ease: "power1.out",
+          });
+        }
+
         // Set initial positions (multiplier: 1 for left, -1 for right)
         this.setInitialPositions(this.leftTexts, this.leftRange, 1);
         this.setInitialPositions(this.rightTexts, this.rightRange, -1);
@@ -173,10 +181,10 @@ export class DualWaveAnimation {
   updateThumbnail(thumbnail, focusedText) {
     if (!thumbnail || !focusedText) return;
 
-    // Récupère l'image depuis la gauche (source unique)
+    // Get image from left column (single source)
     let newImage = focusedText.dataset.image;
 
-    // Si le texte focused n'a pas d'image, cherche dans la colonne gauche avec le même index
+    // If focused text has no image, look for the same index in left column
     if (!newImage) {
       const focusedIndex = this.rightTexts.indexOf(focusedText);
       if (focusedIndex !== -1 && this.leftTexts[focusedIndex]) {
@@ -184,14 +192,14 @@ export class DualWaveAnimation {
       }
     }
 
-    // Change l'image uniquement si différente
+    // Only change image if different
     if (newImage && this.currentImage !== newImage) {
       this.currentImage = newImage;
 
       thumbnail.src = newImage;
     }
 
-    // Calcule la position pour centrer l'image avec le texte
+    // Calculate position to center image with text
     const textRect = focusedText.getBoundingClientRect();
     const wrapperRect = this.wrapper.getBoundingClientRect();
     const thumbnailHeight = thumbnail.offsetHeight;
@@ -199,12 +207,10 @@ export class DualWaveAnimation {
     const textCenterY = textRect.top + textRect.height / 2 - wrapperRect.top;
     const targetY = textCenterY - thumbnailHeight / 2;
 
-    // Utilise gsap.to ou crée un quickSetter
-    gsap.to(thumbnail, {
-      y: targetY,
-      ease: "power1.out",
-      duration: 0.6,
-    });
+    // Use quickTo for better performance
+    if (this.thumbnailQuickY) {
+      this.thumbnailQuickY(targetY);
+    }
   }
 
   getClosestBetweenTwo(text1, text2) {

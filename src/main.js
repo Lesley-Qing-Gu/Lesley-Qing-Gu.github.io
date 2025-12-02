@@ -21,11 +21,8 @@ if (page === "index.html" || page === "") {
   const container = document.querySelector("[data-animation='wave-text']");
   if (container) {
     const animation = new WaveTextAnimation(container);
-    // Wait for all images to preload before initializing layout and scroll effects
-    preloadImages("[data-animation='wave-text']").then(() => {
-      document.body.classList.remove("loading"); // Remove loading state
-      animation.init(); // Start layout initialization
-    });
+    document.body.classList.remove("loading");
+    animation.init();
   }
 } else if (page.startsWith("dual-wave")) {
   const wrapper = document.querySelector("[data-animation='dual-wave']");
