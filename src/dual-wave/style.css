@@ -26,6 +26,7 @@
 .animated-text {
   width: max-content;
   color: #4d4d4d;
+  text-transform: uppercase;
   transition: color 300ms ease-out;
 }
 
@@ -36,12 +37,13 @@
 
 .image-thumbnail-wrapper {
   position: absolute;
-  top: 0%;
+  top: 0;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, 0);
   width: 30vw;
   height: auto;
   z-index: 1;
+  pointer-events: none;
 }
 
 .image-thumbnail {

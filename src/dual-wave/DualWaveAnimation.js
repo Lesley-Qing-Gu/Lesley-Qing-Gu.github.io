@@ -37,72 +37,63 @@ export class DualWaveAnimation {
       return;
     }
 
-    this.setupResponsiveAnimation();
+    this.setupAnimation();
   }
 
-  setupResponsiveAnimation() {
-    const mm = gsap.matchMedia();
-
-    mm.add(
-      {
-        isDesktop: "(min-width: 1024px)",
-        isMobile: "(max-width: 1023px)",
-      },
-      () => {
-        // Get texts from both columns
-        this.leftTexts = gsap.utils.toArray(
-          this.leftColumn.querySelectorAll(".animated-text")
-        );
-        this.rightTexts = gsap.utils.toArray(
-          this.rightColumn.querySelectorAll(".animated-text")
-        );
-
-        this.thumbnail = this.wrapper.querySelector(".image-thumbnail");
-
-        if (this.leftTexts.length === 0 || this.rightTexts.length === 0) return;
-
-        // Calculate ranges based on column widths minus max element width
-        const maxLeftTextWidth = Math.max(
-          ...this.leftTexts.map((t) => t.offsetWidth)
-        );
-        const maxRightTextWidth = Math.max(
-          ...this.rightTexts.map((t) => t.offsetWidth)
-        );
-
-        this.leftRange = {
-          minX: 0,
-          maxX: this.leftColumn.offsetWidth - maxLeftTextWidth,
-        };
-        this.rightRange = {
-          minX: 0,
-          maxX: this.rightColumn.offsetWidth - maxRightTextWidth,
-        };
-
-        // Create quick setters
-        this.leftQuickSetters = this.leftTexts.map((text) =>
-          gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
-        );
-
-        this.rightQuickSetters = this.rightTexts.map((text) =>
-          gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
-        );
-
-        // Create quick setter for thumbnail
-        if (this.thumbnail) {
-          this.thumbnailQuickY = gsap.quickTo(this.thumbnail, "y", {
-            duration: 0.6,
-            ease: "power1.out",
-          });
-        }
-
-        // Set initial positions (multiplier: 1 for left, -1 for right)
-        this.setInitialPositions(this.leftTexts, this.leftRange, 1);
-        this.setInitialPositions(this.rightTexts, this.rightRange, -1);
-
-        // Setup scroll trigger
-        this.setupScrollTrigger();
-      }
+  setupAnimation() {
+    // Get texts from both columns
+    this.leftTexts = gsap.utils.toArray(
+      this.leftColumn.querySelectorAll(".animated-text")
     );
+    this.rightTexts = gsap.utils.toArray(
+      this.rightColumn.querySelectorAll(".animated-text")
+    );
+
+    this.thumbnail = this.wrapper.querySelector(".image-thumbnail");
+
+    if (this.leftTexts.length === 0 || this.rightTexts.length === 0) return;
+
+    // Create quick setters for smooth text animations
+    this.leftQuickSetters = this.leftTexts.map((text) =>
+      gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
+    );
+
+    this.rightQuickSetters = this.rightTexts.map((text) =>
+      gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
+    );
+
+    // Calculate initial ranges and positions
+    this.calculateRanges();
+    this.setInitialPositions(this.leftTexts, this.leftRange, 1);
+    this.setInitialPositions(this.rightTexts, this.rightRange, -1);
+
+    // Setup scroll trigger
+    this.setupScrollTrigger();
+
+    // Recalculate ranges on window resize
+    this.resizeHandler = () => {
+      this.calculateRanges();
+    };
+    window.addEventListener("resize", this.resizeHandler);
+  }
+
+  calculateRanges() {
+    // Calculate ranges based on column widths minus max element width
+    const maxLeftTextWidth = Math.max(
+      ...this.leftTexts.map((t) => t.offsetWidth)
+    );
+    const maxRightTextWidth = Math.max(
+      ...this.rightTexts.map((t) => t.offsetWidth)
+    );
+
+    this.leftRange = {
+      minX: 0,
+      maxX: this.leftColumn.offsetWidth - maxLeftTextWidth,
+    };
+    this.rightRange = {
+      minX: 0,
+      maxX: this.rightColumn.offsetWidth - maxRightTextWidth,
+    };
   }
 
   setInitialPositions(texts, range, multiplier) {
@@ -123,7 +114,6 @@ export class DualWaveAnimation {
       trigger: this.wrapper,
       start: "top bottom",
       end: "bottom top",
-      scrub: 2,
       onUpdate: (self) => this.handleScroll(self),
     });
   }
@@ -195,22 +185,25 @@ export class DualWaveAnimation {
     // Only change image if different
     if (newImage && this.currentImage !== newImage) {
       this.currentImage = newImage;
-
       thumbnail.src = newImage;
     }
 
-    // Calculate position to center image with text
-    const textRect = focusedText.getBoundingClientRect();
+    // Position thumbnail to stay centered in viewport, clamped to allow centering on first/last text
     const wrapperRect = this.wrapper.getBoundingClientRect();
+    const viewportCenter = window.innerHeight / 2;
     const thumbnailHeight = thumbnail.offsetHeight;
+    const wrapperHeight = this.wrapper.offsetHeight;
 
-    const textCenterY = textRect.top + textRect.height / 2 - wrapperRect.top;
-    const targetY = textCenterY - thumbnailHeight / 2;
+    // Calculate ideal Y position (centered in viewport)
+    const idealY = viewportCenter - wrapperRect.top - thumbnailHeight / 2;
 
-    // Use quickTo for better performance
-    if (this.thumbnailQuickY) {
-      this.thumbnailQuickY(targetY);
-    }
+    // Clamp to allow image to overflow wrapper to center on first/last text
+    const minY = -thumbnailHeight / 2;
+    const maxY = wrapperHeight - thumbnailHeight / 2;
+    const clampedY = Math.max(minY, Math.min(maxY, idealY));
+
+    // Apply position directly without animation for perfect scroll sync
+    gsap.set(thumbnail, { y: clampedY });
   }
 
   getClosestBetweenTwo(text1, text2) {
@@ -259,6 +252,9 @@ export class DualWaveAnimation {
   destroy() {
     if (this.scrollTrigger) {
       this.scrollTrigger.kill();
+    }
+    if (this.resizeHandler) {
+      window.removeEventListener("resize", this.resizeHandler);
     }
   }
 }

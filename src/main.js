@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import { ScrollSmoother, ScrollTrigger } from "gsap/all";
-import { WaveTextAnimation } from "./wave-text/WaveTextAnimation.js";
 import { DualWaveAnimation } from "./dual-wave/DualWaveAnimation.js";
 import { preloadImages } from "./utils.js";
 
@@ -14,24 +13,13 @@ ScrollSmoother.create({
   normalizeScroll: true,
 });
 
-// Detect current page and load appropriate animation
-const page = window.location.pathname.split("/").pop() || "index.html";
-
-if (page === "index.html" || page === "") {
-  const container = document.querySelector("[data-animation='wave-text']");
-  if (container) {
-    const animation = new WaveTextAnimation(container);
+// Initialize dual wave animation
+const wrapper = document.querySelector("[data-animation='dual-wave']");
+if (wrapper) {
+  const animation = new DualWaveAnimation(wrapper);
+  // Wait for all images to preload before initializing layout and scroll effects
+  preloadImages("[data-animation='dual-wave']").then(() => {
     document.body.classList.remove("loading");
     animation.init();
-  }
-} else if (page.startsWith("dual-wave")) {
-  const wrapper = document.querySelector("[data-animation='dual-wave']");
-  if (wrapper) {
-    const animation = new DualWaveAnimation(wrapper);
-    // Wait for all images to preload before initializing layout and scroll effects
-    preloadImages("[data-animation='dual-wave']").then(() => {
-      document.body.classList.remove("loading"); // Remove loading state
-      animation.init(); // Start layout initialization
-    });
-  }
+  });
 }

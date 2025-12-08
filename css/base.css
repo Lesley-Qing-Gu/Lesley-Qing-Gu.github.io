@@ -12,8 +12,8 @@
   --color-bg: #000;
   --color-link: rgba(255, 255, 255, 0.6);
   --color-link-hover: #fff;
-  --page-padding: 0px 1rem;
-  font-size: 16px;
+  --page-padding: 1.5rem;
+  font-size: 1.25rem;
 }
 
 *,
@@ -86,7 +86,7 @@ body {
 .container {
   width: 100%;
   min-height: 100vh;
-  padding: var(--page-padding);
+  padding: 0 var(--page-padding);
 }
 
 .spacer {
@@ -140,5 +140,120 @@ body {
     backdrop-filter: blur(10px);
     gap: 1rem;
     padding: 1rem 0.5rem;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-link);
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-link-hover);
+  }
+
+  &:focus {
+    outline: none;
+    background: lightgrey;
+
+    &:not(:focus-visible) {
+      background: transparent;
+    }
+
+    &:focus-visible {
+      outline: 2px solid red;
+      background: transparent;
+    }
+  }
+}
+
+.frame {
+  padding: 3rem var(--page-padding) 0;
+  display: grid;
+  z-index: 1000;
+  position: relative;
+  grid-row-gap: 1rem;
+  grid-column-gap: 2rem;
+  pointer-events: none;
+  justify-items: start;
+  grid-template-columns: auto auto auto 1fr;
+  grid-template-areas:
+    "title title title title"
+    "back archive github ..."
+    "demos demos demos demos"
+    "tags tags tags tags"
+    "sponsor sponsor sponsor sponsor";
+
+  #cdawrap {
+    justify-self: start;
+    grid-area: sponsor;
+  }
+
+  a,
+  button {
+    pointer-events: auto;
+    color: var(--color-text);
+  }
+
+  .frame__title {
+    grid-area: title;
+    font-size: inherit;
+    margin: 0;
+  }
+
+  .frame__back {
+    grid-area: back;
+    justify-self: start;
+  }
+
+  .frame__archive {
+    grid-area: archive;
+    justify-self: start;
+  }
+
+  .frame__github {
+    grid-area: github;
+  }
+
+  .frame__tags {
+    grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .frame__demos {
+    grid-area: demos;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  @media screen and (min-width: 53em) {
+    padding: var(--page-padding);
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    grid-template-columns: auto auto auto auto 1fr;
+    grid-template-rows: auto auto;
+    align-content: space-between;
+    grid-template-areas:
+      "title back github archive demos"
+      "tags tags tags sponsor sponsor";
+
+    .frame__tags {
+      align-self: end;
+    }
+
+    .frame__demos,
+    #cdawrap {
+      justify-self: end;
+      text-align: right;
+      max-width: 300px;
+    }
   }
 }

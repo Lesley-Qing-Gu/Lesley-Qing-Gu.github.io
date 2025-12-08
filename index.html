@@ -5,58 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A collection of creative text animations on scroll using GSAP"
+      content="Dual wave text animation with two columns"
     />
-    <meta
-      name="keywords"
-      content="text animation, scroll, gsap, web animation"
-    />
+    <meta name="keywords" content="text animation, scroll, gsap, wave" />
     <meta name="author" content="Codrops" />
-    <title>Text Animations on Scroll | Codrops</title>
+    <title>Dual Wave Text Animation | Codrops</title>
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="src/wave-text/style.css" />
+    <link rel="stylesheet" href="src/dual-wave/style.css" />
   </head>
   <body class="loading">
-    <nav class="demos-nav">
-      <a href="index.html" class="demo-link active">V001</a>
-      <a href="dual-wave-1.html" class="demo-link">V002</a>
-      <a href="dual-wave-2.html" class="demo-link">V003</a>
-      <a href="dual-wave-3.html" class="demo-link">V004</a>
-      <a href="dual-wave-4.html" class="demo-link">V005</a>
-      <a href="dual-wave-5.html" class="demo-link">V006</a>
-    </nav>
-    <!-- Main Content -->
+    <header class="frame">
+      <h1 class="frame__title">Dual Wave Text Animation on Scroll</h1>
+      <a class="frame__back" href="https://tympanus.net/codrops/?p=">Article</a>
+      <a class="frame__archive" href="https://tympanus.net/codrops/hub/"
+        >All demos</a
+      >
+      <a class="frame__github" href="https://github.com/codrops/">GitHub</a>
+      <nav class="frame__tags">
+        <a href="https://tympanus.net/codrops/demos/?tag=gsap">#gsap</a>
+        <a href="https://tympanus.net/codrops/demos/?tag=scroll">#scroll</a>
+      </nav>
+    </header>
     <main id="smooth-wrapper" class="container">
       <div id="smooth-content">
         <div class="spacer"></div>
-        <div class="content-container" data-animation="wave-text">
-          <div class="section">
-            <div class="animated-text">INFINITY</div>
+        <div
+          class="dual-wave-wrapper"
+          data-animation="dual-wave"
+          data-wave-number="12"
+          data-wave-speed="1"
+        >
+          <!-- Left Column -->
+          <div class="wave-column wave-column-left">
+            <div class="animated-text" data-image="bold.avif">Bold</div>
+
+            <div class="animated-text" data-image="calm.avif">Calm</div>
+            <div class="animated-text" data-image="vibrant.avif">Vibrant</div>
+            <div class="animated-text" data-image="serene.avif">Serene</div>
+
+            <div class="animated-text" data-image="wild.avif">Wild</div>
+            <div class="animated-text" data-image="mystery.avif">Mystery</div>
+            <div class="animated-text" data-image="energy.avif">Energy</div>
+
+            <div class="animated-text" data-image="pure.avif">Pure</div>
+            <div class="animated-text" data-image="depth.avif">Depth</div>
+            <div class="animated-text" data-image="warmth.avif">Warmth</div>
+
+            <div class="animated-text" data-image="dream.avif">Dream</div>
+            <div class="animated-text" data-image="ethereal.avif">Ethereal</div>
           </div>
 
-          <div class="section">
-            <div class="animated-text">DISCOVERY</div>
-            <div class="animated-text">WONDER</div>
-            <div class="animated-text">EXPLORATION</div>
+          <div class="image-thumbnail-wrapper">
+            <img src="bold.jpg" alt="Bold" class="image-thumbnail" />
           </div>
 
-          <div class="section">
-            <div class="animated-text">ENDURING</div>
-            <div class="animated-text">SUPREME</div>
-            <div class="animated-text">ELOQUENT</div>
-          </div>
+          <!-- Right Column -->
+          <div class="wave-column wave-column-right">
+            <div class="animated-text">Red</div>
 
-          <div class="section">
-            <div class="animated-text">TIMELESS</div>
-            <div class="animated-text">REFINED</div>
-            <div class="animated-text">BRILLIANT</div>
-          </div>
+            <div class="animated-text">Blue</div>
+            <div class="animated-text">Yellow</div>
+            <div class="animated-text">Green</div>
 
-          <div class="section">
-            <div class="animated-text">HARMONY</div>
-            <div class="animated-text">SEAMLESS</div>
+            <div class="animated-text">Teal</div>
+            <div class="animated-text">Purple</div>
+            <div class="animated-text">Orange</div>
+
+            <div class="animated-text">White</div>
+            <div class="animated-text">Navy</div>
+            <div class="animated-text">Amber</div>
+
+            <div class="animated-text">Pink</div>
+            <div class="animated-text">Silver</div>
           </div>
         </div>
+
         <div class="spacer-bottom"></div>
       </div>
     </main>
