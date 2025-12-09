@@ -1,13 +1,10 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export class WaveTextAnimation {
   constructor(container, options = {}) {
     // Accept element directly instead of selector
-    this.container =
-      container instanceof Element
-        ? container
-        : document.querySelector(container);
+    this.container = container instanceof Element ? container : document.querySelector(container);
     this.texts = [];
     this.scrollTrigger = null;
     this.quickSetters = [];
@@ -22,7 +19,7 @@ export class WaveTextAnimation {
 
   init() {
     if (!this.container) {
-      console.warn("Container not found");
+      console.warn('Container not found');
       return;
     }
 
@@ -34,11 +31,11 @@ export class WaveTextAnimation {
 
     mm.add(
       {
-        isDesktop: "(min-width: 1024px)",
-        isMobile: "(max-width: 1023px)",
+        isDesktop: '(min-width: 1024px)',
+        isMobile: '(max-width: 1023px)',
       },
       () => {
-        this.texts = gsap.utils.toArray(".animated-text");
+        this.texts = gsap.utils.toArray('.animated-text');
 
         if (this.texts.length === 0) return;
 
@@ -58,9 +55,7 @@ export class WaveTextAnimation {
   }
 
   createQuickSetters() {
-    this.quickSetters = this.texts.map((text) =>
-      gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
-    );
+    this.quickSetters = this.texts.map((text) => gsap.quickTo(text, 'x', { duration: 0.6, ease: 'power4.out' }));
   }
 
   setInitialPositions() {
@@ -79,8 +74,8 @@ export class WaveTextAnimation {
   setupScrollTrigger() {
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.container,
-      start: "top bottom",
-      end: "bottom top",
+      start: 'top bottom',
+      end: 'bottom top',
       scrub: 2,
       onUpdate: (self) => this.handleScroll(self),
     });
@@ -93,28 +88,20 @@ export class WaveTextAnimation {
     const closestIndex = this.findClosestToViewportCenter();
 
     this.texts.forEach((text, index) => {
-      const finalX = this.calculateWavePosition(
-        index,
-        globalProgress,
-        this.range.minX,
-        rangeSize
-      );
+      const finalX = this.calculateWavePosition(index, globalProgress, this.range.minX, rangeSize);
 
       this.quickSetters[index](finalX);
 
       if (index === closestIndex) {
-        text.classList.add("focused");
+        text.classList.add('focused');
       } else {
-        text.classList.remove("focused");
+        text.classList.remove('focused');
       }
     });
   }
 
   calculateWavePosition(index, globalProgress, minX, range) {
-    const phase =
-      this.config.waveNumber * index +
-      this.config.waveSpeed * globalProgress * Math.PI * 2 -
-      Math.PI / 2;
+    const phase = this.config.waveNumber * index + this.config.waveSpeed * globalProgress * Math.PI * 2 - Math.PI / 2;
     const wave = Math.sin(phase);
     const cycleProgress = (wave + 1) / 2;
     return minX + cycleProgress * range;

@@ -22,13 +22,13 @@ const preloadImages = (containerSelector) => {
     const imagesToLoad = new Set();
 
     // 1. Collect images from data-image attributes
-    container.querySelectorAll('[data-image]').forEach(el => {
+    container.querySelectorAll('[data-image]').forEach((el) => {
       const imgSrc = el.dataset.image;
       if (imgSrc) imagesToLoad.add(imgSrc);
     });
 
     // 2. Collect visible <img> elements (use getAttribute to preserve relative paths)
-    container.querySelectorAll('img').forEach(img => {
+    container.querySelectorAll('img').forEach((img) => {
       const imgSrc = img.getAttribute('src');
       if (imgSrc) imagesToLoad.add(imgSrc);
     });
@@ -43,7 +43,7 @@ const preloadImages = (containerSelector) => {
     let loaded = 0;
     const total = imagesToLoad.size;
 
-    imagesToLoad.forEach(src => {
+    imagesToLoad.forEach((src) => {
       // Skip if already cached
       if (imageCache.has(src)) {
         loaded++;

@@ -1,19 +1,10 @@
-/* Fonts */
-@font-face {
-  font-family: "PP Neue Bit";
-  src: url("../fonts/PPNeueBit-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
-  --color-text: #fff;
+  --color-text: rgba(255, 255, 255, 0.6);
   --color-bg: #000;
   --color-link: rgba(255, 255, 255, 0.6);
   --color-link-hover: #fff;
   --page-padding: 1.5rem;
-  font-size: 1.25rem;
+  font-size: 14px;
 }
 
 *,
@@ -25,7 +16,7 @@
 }
 
 body {
-  font-family: "PP Neue Bit", sans-serif;
+  font-family: 'forma-djr-mono', monospace;
   background: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
@@ -35,7 +26,7 @@ body {
   .loading {
     &::before,
     &::after {
-      content: "";
+      content: '';
       position: fixed;
       z-index: 10000;
     }
@@ -97,52 +88,6 @@ body {
   height: 100svh;
 }
 
-/* Demos Navigation */
-.demos-nav {
-  position: fixed;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 2rem;
-  z-index: 999;
-  padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.demo-link {
-  color: var(--color-link);
-  text-decoration: none;
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  transition: color 0.3s ease;
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.demo-link:hover {
-  color: var(--color-link-hover);
-}
-
-.demo-link.active {
-  color: var(--color-text);
-}
-
-@media (max-width: 1023px) {
-  .demos-nav {
-    border-radius: 10px;
-    width: 90%;
-    flex-wrap: wrap;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    gap: 1rem;
-    padding: 1rem 0.5rem;
-  }
-}
-
 a {
   text-decoration: none;
   color: var(--color-link);
@@ -170,21 +115,22 @@ a {
 }
 
 .frame {
+  text-transform: uppercase;
   padding: 3rem var(--page-padding) 0;
   display: grid;
   z-index: 1000;
   position: relative;
-  grid-row-gap: 1rem;
+  grid-row-gap: 0.5rem;
   grid-column-gap: 2rem;
   pointer-events: none;
   justify-items: start;
   grid-template-columns: auto auto auto 1fr;
   grid-template-areas:
-    "title title title title"
-    "back archive github ..."
-    "demos demos demos demos"
-    "tags tags tags tags"
-    "sponsor sponsor sponsor sponsor";
+    'title title title title'
+    'back archive github ...'
+    'demos demos demos demos'
+    'tags tags tags tags'
+    'sponsor sponsor sponsor sponsor';
 
   #cdawrap {
     justify-self: start;
@@ -233,21 +179,16 @@ a {
 
   @media screen and (min-width: 53em) {
     padding: var(--page-padding);
-    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    grid-template-columns: auto auto auto auto 1fr;
-    grid-template-rows: auto auto;
-    align-content: space-between;
+    grid-template-columns: auto auto auto 1fr;
+    grid-template-rows: auto auto auto;
     grid-template-areas:
-      "title back github archive demos"
-      "tags tags tags sponsor sponsor";
-
-    .frame__tags {
-      align-self: end;
-    }
+      'title title title title'
+      'back github archive demos'
+      'tags tags sponsor sponsor';
 
     .frame__demos,
     #cdawrap {
