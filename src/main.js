@@ -1,7 +1,7 @@
-import gsap from 'gsap';
-import { ScrollSmoother, ScrollTrigger } from 'gsap/all';
-import { DualWaveAnimation } from './dual-wave/DualWaveAnimation.js';
-import { preloadImages } from './utils.js';
+import gsap from "gsap";
+import { ScrollSmoother, ScrollTrigger } from "gsap/all";
+import { DualWaveAnimation } from "./dual-wave/DualWaveAnimation.js";
+import { preloadImages } from "./utils.js";
 
 // Register GSAP plugins globally
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -9,17 +9,16 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 // Initialize smooth scroll
 ScrollSmoother.create({
   smooth: 1.5,
-  effects: true,
   normalizeScroll: true,
 });
 
 // Initialize dual wave animation
-const wrapper = document.querySelector("[data-animation='dual-wave']");
+const wrapper = document.querySelector(".dual-wave-wrapper");
 if (wrapper) {
   const animation = new DualWaveAnimation(wrapper);
   // Wait for all images to preload before initializing layout and scroll effects
-  preloadImages("[data-animation='dual-wave']").then(() => {
-    document.body.classList.remove('loading');
+  preloadImages(".dual-wave-wrapper").then(() => {
+    document.body.classList.remove("loading");
     animation.init();
   });
 }

@@ -1,13 +1,18 @@
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export class DualWaveAnimation {
   constructor(wrapper, options = {}) {
-    this.wrapper = wrapper instanceof Element ? wrapper : document.querySelector(wrapper);
+    this.wrapper =
+      wrapper instanceof Element ? wrapper : document.querySelector(wrapper);
 
     // Read config from data attributes
-    const waveNumber = this.wrapper?.dataset.waveNumber ? parseFloat(this.wrapper.dataset.waveNumber) : 2;
-    const waveSpeed = this.wrapper?.dataset.waveSpeed ? parseFloat(this.wrapper.dataset.waveSpeed) : 1;
+    const waveNumber = this.wrapper?.dataset.waveNumber
+      ? parseFloat(this.wrapper.dataset.waveNumber)
+      : 2;
+    const waveSpeed = this.wrapper?.dataset.waveSpeed
+      ? parseFloat(this.wrapper.dataset.waveSpeed)
+      : 1;
 
     this.config = {
       waveNumber,
@@ -20,15 +25,15 @@ export class DualWaveAnimation {
 
   init() {
     if (!this.wrapper) {
-      console.warn('Wrapper not found');
+      console.warn("Wrapper not found");
       return;
     }
 
-    this.leftColumn = this.wrapper.querySelector('.wave-column-left');
-    this.rightColumn = this.wrapper.querySelector('.wave-column-right');
+    this.leftColumn = this.wrapper.querySelector(".wave-column-left");
+    this.rightColumn = this.wrapper.querySelector(".wave-column-right");
 
     if (!this.leftColumn || !this.rightColumn) {
-      console.warn('Columns not found');
+      console.warn("Columns not found");
       return;
     }
 
@@ -37,20 +42,24 @@ export class DualWaveAnimation {
 
   setupAnimation() {
     // Get texts from both columns
-    this.leftTexts = gsap.utils.toArray(this.leftColumn.querySelectorAll('.animated-text'));
-    this.rightTexts = gsap.utils.toArray(this.rightColumn.querySelectorAll('.animated-text'));
+    this.leftTexts = gsap.utils.toArray(
+      this.leftColumn.querySelectorAll(".animated-text")
+    );
+    this.rightTexts = gsap.utils.toArray(
+      this.rightColumn.querySelectorAll(".animated-text")
+    );
 
-    this.thumbnail = this.wrapper.querySelector('.image-thumbnail');
+    this.thumbnail = this.wrapper.querySelector(".image-thumbnail");
 
     if (this.leftTexts.length === 0 || this.rightTexts.length === 0) return;
 
     // Create quick setters for smooth text animations
     this.leftQuickSetters = this.leftTexts.map((text) =>
-      gsap.quickTo(text, 'x', { duration: 0.6, ease: 'power4.out' })
+      gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
     );
 
     this.rightQuickSetters = this.rightTexts.map((text) =>
-      gsap.quickTo(text, 'x', { duration: 0.6, ease: 'power4.out' })
+      gsap.quickTo(text, "x", { duration: 0.6, ease: "power4.out" })
     );
 
     // Calculate initial ranges and positions
@@ -65,13 +74,17 @@ export class DualWaveAnimation {
     this.resizeHandler = () => {
       this.calculateRanges();
     };
-    window.addEventListener('resize', this.resizeHandler);
+    window.addEventListener("resize", this.resizeHandler);
   }
 
   calculateRanges() {
     // Calculate ranges based on column widths minus max element width
-    const maxLeftTextWidth = Math.max(...this.leftTexts.map((t) => t.offsetWidth));
-    const maxRightTextWidth = Math.max(...this.rightTexts.map((t) => t.offsetWidth));
+    const maxLeftTextWidth = Math.max(
+      ...this.leftTexts.map((t) => t.offsetWidth)
+    );
+    const maxRightTextWidth = Math.max(
+      ...this.rightTexts.map((t) => t.offsetWidth)
+    );
 
     this.leftRange = {
       minX: 0,
@@ -99,8 +112,8 @@ export class DualWaveAnimation {
   setupScrollTrigger() {
     this.scrollTrigger = ScrollTrigger.create({
       trigger: this.wrapper,
-      start: 'top bottom',
-      end: 'bottom top',
+      start: "top bottom",
+      end: "bottom top",
       onUpdate: (self) => this.handleScroll(self),
     });
   }
@@ -108,33 +121,47 @@ export class DualWaveAnimation {
   handleScroll(self) {
     const globalProgress = self.progress;
 
-    const closestLeftIndex = this.findClosestToViewportCenter(this.leftTexts);
-    const closestRightIndex = this.findClosestToViewportCenter(this.rightTexts);
-
-    const leftClosest = this.leftTexts[closestLeftIndex];
-    const rightClosest = this.rightTexts[closestRightIndex];
-    const overallClosest = this.getClosestBetweenTwo(leftClosest, rightClosest);
+    // Since left and right texts are always aligned, we only need to check one column
+    const closestIndex = this.findClosestToViewportCenter();
 
     // Update both columns with their respective multipliers
-    this.updateColumn(this.leftTexts, this.leftQuickSetters, this.leftRange, globalProgress, closestLeftIndex, 1);
+    this.updateColumn(
+      this.leftTexts,
+      this.leftQuickSetters,
+      this.leftRange,
+      globalProgress,
+      closestIndex,
+      1
+    );
 
-    this.updateColumn(this.rightTexts, this.rightQuickSetters, this.rightRange, globalProgress, closestRightIndex, -1);
+    this.updateColumn(
+      this.rightTexts,
+      this.rightQuickSetters,
+      this.rightRange,
+      globalProgress,
+      closestIndex,
+      -1
+    );
 
-    this.updateThumbnail(this.thumbnail, overallClosest);
+    // Get the focused text element for thumbnail update
+    const focusedText = this.leftTexts[closestIndex];
+    this.updateThumbnail(this.thumbnail, focusedText);
   }
 
   updateColumn(texts, setters, range, progress, focusedIndex, multiplier) {
     const rangeSize = range.maxX - range.minX;
 
     texts.forEach((text, index) => {
-      const finalX = this.calculateWavePosition(index, progress, range.minX, rangeSize) * multiplier;
+      const finalX =
+        this.calculateWavePosition(index, progress, range.minX, rangeSize) *
+        multiplier;
 
       setters[index](finalX);
 
       if (index === focusedIndex) {
-        text.classList.add('focused');
+        text.classList.add("focused");
       } else {
-        text.classList.remove('focused');
+        text.classList.remove("focused");
       }
     });
   }
@@ -177,33 +204,23 @@ export class DualWaveAnimation {
     gsap.set(thumbnail, { y: clampedY });
   }
 
-  getClosestBetweenTwo(text1, text2) {
-    const viewportCenter = window.innerHeight / 2;
-
-    const rect1 = text1.getBoundingClientRect();
-    const center1 = rect1.top + rect1.height / 2;
-    const distance1 = Math.abs(center1 - viewportCenter);
-
-    const rect2 = text2.getBoundingClientRect();
-    const center2 = rect2.top + rect2.height / 2;
-    const distance2 = Math.abs(center2 - viewportCenter);
-
-    return distance1 < distance2 ? text1 : text2;
-  }
-
   calculateWavePosition(index, globalProgress, minX, range) {
-    const phase = this.config.waveNumber * index + this.config.waveSpeed * globalProgress * Math.PI * 2 - Math.PI / 2;
+    const phase =
+      this.config.waveNumber * index +
+      this.config.waveSpeed * globalProgress * Math.PI * 2 -
+      Math.PI / 2;
     const wave = Math.sin(phase);
     const cycleProgress = (wave + 1) / 2;
     return minX + cycleProgress * range;
   }
 
-  findClosestToViewportCenter(texts) {
+  findClosestToViewportCenter() {
     const viewportCenter = window.innerHeight / 2;
     let closestIndex = 0;
     let minDistance = Infinity;
 
-    texts.forEach((text, index) => {
+    // Only check left column since left and right are always horizontally aligned
+    this.leftTexts.forEach((text, index) => {
       const rect = text.getBoundingClientRect();
       const elementCenter = rect.top + rect.height / 2;
       const distance = Math.abs(elementCenter - viewportCenter);
@@ -222,7 +239,7 @@ export class DualWaveAnimation {
       this.scrollTrigger.kill();
     }
     if (this.resizeHandler) {
-      window.removeEventListener('resize', this.resizeHandler);
+      window.removeEventListener("resize", this.resizeHandler);
     }
   }
 }
