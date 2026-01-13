@@ -4,9 +4,9 @@ _Wave text animations across dual columns with scroll-driven sine wave mathemati
 
 ![Image Title](public/thumbnail.avif)
 
-[Article on Codrops](https://tympanus.net/codrops/?p=)
+[Article on Codrops](https://tympanus.net/codrops/?p=106674)
 
-[Demo](https://tympanus.net/Tutorials/.../)
+[Demo](https://tympanus.net/Tutorials/DualWaveTextAnimation/)
 
 ## Installation
 
