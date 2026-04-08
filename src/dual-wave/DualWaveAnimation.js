@@ -21,6 +21,7 @@ export class DualWaveAnimation {
     };
 
     this.currentImage = null;
+    this.currentDesc = null;
   }
 
   init() {
@@ -50,6 +51,8 @@ export class DualWaveAnimation {
     );
 
     this.thumbnail = this.wrapper.querySelector(".image-thumbnail");
+    this.descEl = document.querySelector(".frame__desc");
+    this.defaultDesc = this.descEl ? this.descEl.textContent : "";
 
     if (this.leftTexts.length === 0 || this.rightTexts.length === 0) return;
 
@@ -115,6 +118,17 @@ export class DualWaveAnimation {
       start: "top bottom",
       end: "bottom top",
       onUpdate: (self) => this.handleScroll(self),
+      onLeave: () => this.resetDesc(),
+      onLeaveBack: () => this.resetDesc(),
+    });
+
+    // Separate trigger for desc swap — only when wave is in viewport center
+    this.descTrigger = ScrollTrigger.create({
+      trigger: this.wrapper,
+      start: "top 80%",
+      end: "bottom 20%",
+      onLeave: () => this.resetDesc(),
+      onLeaveBack: () => this.resetDesc(),
     });
   }
 
@@ -145,7 +159,7 @@ export class DualWaveAnimation {
 
     // Get the focused text element for thumbnail update
     const focusedText = this.leftTexts[closestIndex];
-    this.updateThumbnail(this.thumbnail, focusedText);
+    this.updateThumbnail(this.thumbnail, focusedText, closestIndex);
   }
 
   updateColumn(texts, setters, range, progress, focusedIndex, multiplier) {
@@ -166,7 +180,7 @@ export class DualWaveAnimation {
     });
   }
 
-  updateThumbnail(thumbnail, focusedText) {
+  updateThumbnail(thumbnail, focusedText, closestIndex) {
     if (!thumbnail || !focusedText) return;
 
     // Get image from left column (single source)
@@ -186,21 +200,30 @@ export class DualWaveAnimation {
       thumbnail.src = newImage;
     }
 
+    // Only update desc when wave section is actively in view
+    if (this.descEl && this.descTrigger && this.descTrigger.isActive) {
+      let newDesc = focusedText.dataset.desc;
+      if (!newDesc && closestIndex !== undefined) {
+        const srcText = this.leftTexts[closestIndex];
+        if (srcText) newDesc = srcText.dataset.desc;
+      }
+      if (newDesc && this.currentDesc !== newDesc) {
+        this.currentDesc = newDesc;
+        this.descEl.textContent = newDesc;
+      }
+    }
+
     // Position thumbnail to stay centered in viewport, clamped to allow centering on first/last text
     const wrapperRect = this.wrapper.getBoundingClientRect();
     const viewportCenter = window.innerHeight / 2;
     const thumbnailHeight = thumbnail.offsetHeight;
     const wrapperHeight = this.wrapper.offsetHeight;
 
-    // Calculate ideal Y position (centered in viewport)
     const idealY = viewportCenter - wrapperRect.top - thumbnailHeight / 2;
-
-    // Clamp to allow image to overflow wrapper to center on first/last text
     const minY = -thumbnailHeight / 2;
     const maxY = wrapperHeight - thumbnailHeight / 2;
     const clampedY = Math.max(minY, Math.min(maxY, idealY));
 
-    // Apply position directly without animation for perfect scroll sync
     gsap.set(thumbnail, { y: clampedY });
   }
 
@@ -219,9 +242,10 @@ export class DualWaveAnimation {
     let closestIndex = 0;
     let minDistance = Infinity;
 
-    // Only check left column since left and right are always horizontally aligned
     this.leftTexts.forEach((text, index) => {
       const rect = text.getBoundingClientRect();
+      // Skip items not visible in viewport
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
       const elementCenter = rect.top + rect.height / 2;
       const distance = Math.abs(elementCenter - viewportCenter);
 
@@ -235,11 +259,15 @@ export class DualWaveAnimation {
   }
 
   destroy() {
-    if (this.scrollTrigger) {
-      this.scrollTrigger.kill();
-    }
-    if (this.resizeHandler) {
-      window.removeEventListener("resize", this.resizeHandler);
+    if (this.scrollTrigger) this.scrollTrigger.kill();
+    if (this.descTrigger) this.descTrigger.kill();
+    if (this.resizeHandler) window.removeEventListener("resize", this.resizeHandler);
+  }
+
+  resetDesc() {
+    if (this.descEl && this.defaultDesc) {
+      this.descEl.textContent = this.defaultDesc;
+      this.currentDesc = null;
     }
   }
 }
