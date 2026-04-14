@@ -1,40 +1,29 @@
 # Lesley Gu — Personal Portfolio
 
-UX Engineer & Creative Technologist portfolio featuring dual-wave scroll animations, pixel noise effects, and a Pac-Man style contact section.
+UX Engineer & Creative Technologist based in Stockholm.
 
-## Live
+I engineer AI-forward, accessible systems that resonate across diverse human experiences — blending a filmmaker's storytelling with a dancer's heightened sensitivity to ensure the future of tech is not just smart, but fundamentally human-centric.
 
-[lesleygu.com](https://lesley-qing-gu.github.io/)
+## 🔗 [lesleygu.com](https://lesley-qing-gu.github.io/)
 
-## Stack
+## What's Inside
 
-- Vite
-- GSAP (ScrollSmoother + ScrollTrigger)
-- Vanilla JS / CSS
+- **Projects** — AI products, full-stack engineering, UX design, HCI research, and visual design works
+- **Pac-Man Contact** — A retro game-inspired section where Pac-Man patrols the border eating my freelance services: Web Design, Poster, UI/UX, and Film Curation
+- **Scroll Experience** — Dual-wave animated project list with synchronized image previews
 
-## Features
+## Get in Touch
 
-- **Dual-Wave Scroll** — Sine wave–driven text animation across two synchronized columns with scroll-linked image previews
-- **Pac-Man Contact** — Retro game-inspired contact section with animated Pac-Man patrolling the border, eating dots and corner labels (Web Design / Poster / UI/UX / Film Curation)
-- **Pixel Noise** — Subtle canvas-based colored pixel overlay for a lo-fi aesthetic
+- ✉ [lesleygujiji@gmail.com](mailto:lesleygujiji@gmail.com)
+- 📷 [Instagram](https://www.instagram.com/lesleygujiji/)
+- 💼 [LinkedIn](https://www.linkedin.com/in/qing-gu-072167322/)
+- 🐙 [GitHub](https://github.com/Lesley-Qing-Gu)
 
-## Run Locally
-
-```bash
-npm install
-npm run dev
-```
-
-## Build
-
-```bash
-npm run build
-```
+Open to freelance work — web design, poster design, UI/UX, and film curation.
 
 ## Credits
 
-- Dual-wave animation based on [Codrops tutorial](https://tympanus.net/codrops/?p=106674) by Valentin Descombes
-- Fonts: [Forma DJR Mono](https://fonts.adobe.com/) · [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
+Dual-wave animation inspired by [Codrops](https://tympanus.net/codrops/?p=106674) by Valentin Descombes.
 
 ## License
 
