@@ -1,0 +1,34 @@
+{
+  "hash": "66530813",
+  "configHash": "4741d101",
+  "lockfileHash": "0333ea00",
+  "browserHash": "ebff2a75",
+  "optimized": {
+    "gsap": {
+      "src": "../../node_modules/gsap/index.js",
+      "file": "gsap.js",
+      "fileHash": "93768494",
+      "needsInterop": false
+    },
+    "gsap/all": {
+      "src": "../../node_modules/gsap/all.js",
+      "file": "gsap_all.js",
+      "fileHash": "84636657",
+      "needsInterop": false
+    },
+    "gsap/ScrollTrigger": {
+      "src": "../../node_modules/gsap/ScrollTrigger.js",
+      "file": "gsap_ScrollTrigger.js",
+      "fileHash": "8fdf143e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-Y42GGIMC": {
+      "file": "chunk-Y42GGIMC.js"
+    },
+    "chunk-36UXRTPD": {
+      "file": "chunk-36UXRTPD.js"
+    }
+  }
+}
