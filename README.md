@@ -1,28 +1,31 @@
-# Dual-Wave Scroll Text Animation
+# Lesley Gu — Personal Portfolio
 
-_Wave text animations across dual columns with scroll-driven sine wave mathematics and synchronized image updates._
+UX Engineer & Creative Technologist portfolio featuring dual-wave scroll animations, pixel noise effects, and a Pac-Man style contact section.
 
-![Image Title](public/thumbnail.avif)
+## Live
 
-[Article on Codrops](https://tympanus.net/codrops/?p=106674)
+[lesleygu.com](https://lesley-qing-gu.github.io/)
 
-[Demo](https://tympanus.net/Tutorials/DualWaveTextAnimation/)
+## Stack
 
-## Installation
+- Vite
+- GSAP (ScrollSmoother + ScrollTrigger)
+- Vanilla JS / CSS
+
+## Features
+
+- **Dual-Wave Scroll** — Sine wave–driven text animation across two synchronized columns with scroll-linked image previews
+- **Pac-Man Contact** — Retro game-inspired contact section with animated Pac-Man patrolling the border, eating dots and corner labels (Web Design / Poster / UI/UX / Film Curation)
+- **Pixel Noise** — Subtle canvas-based colored pixel overlay for a lo-fi aesthetic
+
+## Run Locally
 
 ```bash
 npm install
-```
-
-## Run or Build
-
-To run the project locally:
-
-```bash
 npm run dev
 ```
 
-To build the project:
+## Build
 
 ```bash
 npm run build
@@ -30,13 +33,8 @@ npm run build
 
 ## Credits
 
-- Images generated with [Midjourney](https://midjourney.com)
-
-## Misc
-
-Follow _Valentin Descombes_: [Twitter](https://x.com/valdescombes), [Linkedin](https://www.linkedin.com/in/valentin-descombes/), [Instagram](https://www.instagram.com/valentindescombes/), [YouTube](https://www.youtube.com/@valentin-descombes)
-
-Follow Codrops: [X](http://www.x.com/codrops), [Facebook](https://www.facebook.com/codrops), [Instagram](https://www.instagram.com/codropsss/), [LinkedIn](https://www.linkedin.com/company/codrops/), [GitHub](https://github.com/codrops)
+- Dual-wave animation based on [Codrops tutorial](https://tympanus.net/codrops/?p=106674) by Valentin Descombes
+- Fonts: [Forma DJR Mono](https://fonts.adobe.com/) · [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
 
 ## License
 
