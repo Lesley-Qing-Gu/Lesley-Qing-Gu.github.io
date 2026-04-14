@@ -118,6 +118,121 @@ function initProjectLinks() {
   });
 }
 
+// ===== 4. Pac-Man contact animation =====
+function initPacMan() {
+  const board = document.querySelector('.pac-board');
+  const pacEl = document.getElementById('pac-man');
+  const dotsContainer = document.getElementById('pac-dots');
+  if (!board || !pacEl) return;
+
+  const corners = document.querySelectorAll('.pac-corner');
+  // Corner order: TL -> TR -> BR -> BL (clockwise)
+  const margin = 10;
+  const dotSpacing = 28;
+
+  let dots = [];
+  let raf;
+
+  function getCornerPositions() {
+    const w = board.clientWidth;
+    const h = board.clientHeight;
+    return [
+      { x: margin, y: margin },                 // TL
+      { x: w - margin - 22, y: margin },         // TR
+      { x: w - margin - 22, y: h - margin - 22 },// BR
+      { x: margin, y: h - margin - 22 },         // BL
+    ];
+  }
+
+  function getDirection(from, to) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    if (Math.abs(dx) > Math.abs(dy)) return dx > 0 ? 'right' : 'left';
+    return dy > 0 ? 'down' : 'up';
+  }
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    dots = [];
+    const cp = getCornerPositions();
+    for (let i = 0; i < 4; i++) {
+      const from = cp[i];
+      const to = cp[(i + 1) % 4];
+      const dx = to.x - from.x;
+      const dy = to.y - from.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const count = Math.floor(dist / dotSpacing);
+      for (let j = 1; j < count; j++) {
+        const t = j / count;
+        const dot = document.createElement('div');
+        dot.className = 'pac-dot';
+        dot.style.left = (from.x + dx * t + 10) + 'px';
+        dot.style.top = (from.y + dy * t + 10) + 'px';
+        dotsContainer.appendChild(dot);
+        dots.push({ el: dot, x: from.x + dx * t + 10, y: from.y + dy * t + 10 });
+      }
+    }
+  }
+
+  // Animation state
+  let seg = 0;       // current segment 0-3
+  let progress = 0;  // 0..1 along current segment
+  const speed = 0.4; // segments per second
+
+  function animate(time) {
+    const cp = getCornerPositions();
+    const from = cp[seg];
+    const to = cp[(seg + 1) % 4];
+
+    const x = from.x + (to.x - from.x) * progress;
+    const y = from.y + (to.y - from.y) * progress;
+
+    pacEl.style.left = x + 'px';
+    pacEl.style.top = y + 'px';
+    pacEl.dataset.dir = getDirection(from, to);
+
+    // Eat nearby dots
+    const px = x + 11, py = y + 11;
+    dots.forEach(d => {
+      if (!d.el.classList.contains('eaten')) {
+        const dist = Math.abs(d.x - px) + Math.abs(d.y - py);
+        if (dist < 18) d.el.classList.add('eaten');
+      }
+    });
+
+    // Eat corner label when close
+    const cornerIdx = (seg + 1) % 4;
+    const nearEnd = progress > 0.85;
+    const nearStart = progress < 0.15;
+    corners[cornerIdx]?.classList.toggle('eaten', nearEnd);
+    corners[seg]?.classList.toggle('eaten', nearStart);
+
+    progress += speed / 60;
+    if (progress >= 1) {
+      progress = 0;
+      seg = (seg + 1) % 4;
+      // Respawn dots for the segment we just finished
+      dots.forEach(d => d.el.classList.remove('eaten'));
+    }
+
+    raf = requestAnimationFrame(animate);
+  }
+
+  function init() {
+    buildDots();
+    raf = requestAnimationFrame(animate);
+  }
+
+  // Rebuild dots on resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(buildDots, 200);
+  });
+
+  init();
+}
+
 
 // ===== Initialize dual wave animation =====
 const wrapper = document.querySelector(".dual-wave-wrapper");
@@ -130,5 +245,6 @@ if (wrapper) {
     initHeroAnimation();
     initDescReveal();
     initProjectLinks();
+    initPacMan();
   });
 }
