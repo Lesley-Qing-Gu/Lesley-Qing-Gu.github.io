@@ -15,6 +15,40 @@ const LazyIframe = ({ src, ...props }) => {
   return <iframe ref={ref} src={visible ? src : undefined} {...props}/>;
 };
 
+const GalleryCarousel = ({ items, fg, sub }) => {
+  const [idx, setIdx] = useState(0);
+  const g = items[idx];
+  const n = g.images.length;
+  const gh = n>=4?"18vh":n===3?"22vh":n===2?"32vh":"52vh";
+  const gmw = `${Math.floor(88/n)}vw`;
+  const go = d => setIdx(i => (i+d+items.length)%items.length);
+  return (
+    <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:20}}>
+      <h3 style={{fontSize:"clamp(20px,2vw,30px)",fontWeight:800,color:fg,margin:0}}>{g.title}</h3>
+      <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"flex-start",gap:"1.5vw",width:"100%"}}>
+        {g.images.map(src=>(
+          <img key={src} src={src} alt={g.title} loading="lazy" style={{height:gh,width:"auto",maxWidth:gmw}}/>
+        ))}
+      </div>
+      <p style={{fontSize:14,lineHeight:1.7,color:sub,maxWidth:760,textAlign:"center",margin:0}}>{g.desc}</p>
+      <div style={{display:"flex",alignItems:"center",gap:20,marginTop:8}}>
+        <div onClick={()=>go(-1)} style={{cursor:"pointer",padding:8,opacity:0.7,display:"flex"}}>
+          <ArrowRight size={20} color={fg} style={{transform:"rotate(180deg)"}}/>
+        </div>
+        <div style={{display:"flex",gap:6}}>
+          {items.map((_,i)=>(
+            <div key={i} onClick={()=>setIdx(i)} style={{width:8,height:8,borderRadius:"50%",cursor:"pointer",
+              backgroundColor:fg,opacity:i===idx?1:0.3}}/>
+          ))}
+        </div>
+        <div onClick={()=>go(1)} style={{cursor:"pointer",padding:8,opacity:0.7,display:"flex"}}>
+          <ArrowRight size={20} color={fg}/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const GHIcon = ({ size=14, color="#fff" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
@@ -40,10 +74,14 @@ const TRACKS = [
     { name:"BAREBELLS", desc:"\"Protein That Tastes Like Dessert\" — a full AI-assisted brand campaign",
       why:"A speculative brand campaign for Barebells protein bars built for a Designer role application, positioning the product as \"Protein That Tastes Like Dessert.\" It spans outdoor lightbox/metro ads, a five-flavor product lineup, an interactive spin-the-wheel lucky draw, and a campaign video — designed, animated, and shipped as a full interactive website in six hours using an AI-assisted workflow (Lovart and GPT Image for design, Meshy AI for 3D, Kling AI and CapCut for video, Three.js/GSAP/Lenis for the site itself).",
       bg:"#8B0000", gh:"", ai:true, live:"https://lesley-qing-gu.github.io/barebellsdesigncase/",
-      image:"/barebells.png",
+      image:"/barebells/barebells.png",
       stack:["Lovart","GPT Image","Meshy AI","Kling AI","Three.js","GSAP","Lenis"],
       gallery:[
-        { type:"embed", src:"https://lesley-qing-gu.github.io/barebellsdesigncase/", title:"Live Interactive Site", solo:true, desc:"" }
+        { type:"video", src:"/barebells/barebells.mp4", title:"Live Campaign Video",
+          desc:"" },
+        // { type:"embed", src:"https://lesley-qing-gu.github.io/barebellsdesigncase/", title:"Live Interactive Site", solo:true, desc:"" }
+        { type:"image", src:"/barebells/HowIMade.png", title:"How I Made It", solo:true,
+          desc:"Posters were designed in Lovart and polished with GPT Image, then adapted across formats using Lovart's templates. The campaign video was storyboarded with Claude, generated frame-by-frame in GPT Image, and animated with Kling AI. The 3D product model came from Meshy AI, rendered live with Three.js — and the whole interactive site was built with Amazon Q, GSAP, and Lenis." },
       ] },
     { name:"PAPERBULLET", desc:"Film criticism & editorial platform with a serverless CMS",
       why: "Small independent media outlets often struggle with server maintenance costs. PaperBullet was built for a Chinese independent film media team to cover overseas film festivals. Designed as a pure frontend application, it completely eliminates backend server costs while still functioning as a robust CMS. Editors can log in via a password and use a familiar, Word-like rich text editor to easily publish, modify, and delete articles, reports, and rating charts on the go.",
@@ -58,7 +96,7 @@ const TRACKS = [
     { name:"OUTSEA", desc:"Visually-driven, archive-focused website for my independent film podcast", 
       why:"I co-host OutSea with Tiki across Stockholm and Amsterdam to explore European film festivals and arthouse cinemas. I designed this site not just as a landing page, but as an interactive visual archive of our cinematic journey. Using canvas-drawn pixel waves, film grain masks, and ambient ocean soundscapes driven by GSAP, it offers a tactile, immersive experience that preserves our memories and bridges the geographical gap between us and our listeners.",
       bg:"#A4161A", gh:"OutSea", ai:false, live:"https://lesley-qing-gu.github.io/OutSea/",
-      image:"/outsea/logo.png", stack:["HTML","CSS","JavaScript","GSAP","ScrollTrigger","Canvas API"],
+      image:"/outsea/giflogo.gif", imageScale:0.5, stack:["HTML","CSS","JavaScript","GSAP","ScrollTrigger","Canvas API"],
       gallery:[
         { type:"video", src:"/outsea/OutSea.mp4", title:"",
           desc:"" },
@@ -72,7 +110,7 @@ const TRACKS = [
       why:"Learning a new language through audio is powerful but hard to review. Svenska Lyssna turns any Swedish audio into an interactive study tool. Powered by Gemini 3 Flash, it features highly accurate transcription, real-time sentence highlighting synced to playback, and an interactive dictionary for instant IPA and multi-language translations.",
       bg:"#9A031E", gh:"SvenskaLyssna", ai:true, live:"https://ai.studio/apps/2261bbb3-61a1-433c-9979-faf78eec3ee2?fullscreenApplet=true", image:"/images/svenskalyssna.mp4",
       stack:["React","TypeScript","Tailwind CSS","Google Gemini","Motion"], gallery:[] },
-    { name:"SVENSKAKOMPIS", desc:"AI Swedish tutor featuring cultural scenarios & multimodal pronunciation evaluation",
+    { name:"SVENSKA\nKOMPIS", desc:"AI Swedish tutor featuring cultural scenarios & multimodal pronunciation evaluation",
       why:"Practicing a language in realistic scenarios and getting objective feedback is rare outside a classroom. SvenskaKompis bridges this gap with an AI-powered Scenario Builder for cultural immersion and a multimodal Speech Lab. Using Gemini's advanced multimodal capabilities, it listens to your pronunciation, analyzes prosody, and provides real-time scoring to help you master authentic Swedish.",
       bg:"#B90429", gh:"SvenskaKompis", ai:true, live:"https://ai.studio/apps/c4e2552b-eed1-4cb4-8700-fb7a136c02b6?fullscreenApplet=true", image:"/images/svenskakompis.mp4",
       stack:["React","TypeScript","Tailwind CSS","Gemini 3 Pro/Flash","Web Audio API"], gallery:[] },
@@ -173,7 +211,7 @@ const TRACKS = [
         { type:"youtube", src:"https://www.youtube.com/embed/iUnqmPxARBc", title:"Project Overview & Demonstration", solo:true, desc:"" }
       ] },
     { name:"FURHAT ROBOTICS", desc:"Multimodal social robot prototyping — redesigning hardware, interaction, and office integration for human-robot communication",
-      why:"Social robots need to feel alive to earn human trust, yet most HRI prototypes treat speech, gaze, and gesture as separate channels. At Furhat Robotics, I worked across the full stack of human-robot interaction. On the software side, I built a multimodal system in Kotlin synchronizing voice, gaze, and facial expressions in real time. I also developed a WebSocket-based office integration that connects the robot to Google Calendar and file systems — letting users manage their schedule and documents simply by talking to the robot. On the hardware side, I redesigned the robot's physical form: a 360° rotating base for natural head-turning and a new support bracket for smoother mechanical movement. I also designed tangible RFID interfaces through 2 rapid prototyping iterations (sketch → 3D print), enabling users to trigger robot actions through physical objects rather than screens.",
+      why:"Social robots need to feel alive to earn human trust, yet most HRI prototypes treat speech, gaze, and gesture as separate channels. At Furhat Robotics I worked across the full stack — a Kotlin multimodal system syncing voice, gaze, and expression in real time, a WebSocket office integration for calendar and file control by voice, plus hardware redesigns (a 360° rotating base, a sturdier support bracket, and 3D-printed RFID interfaces for physical, screen-free interaction).",
       bg:"#FFC300", gh:"", ai:false, live:"",
       image:"/images/Furhat.jpg", stack:["Kotlin", "WebSocket", "Google Calendar API", "3D Printing", "RFID", "Rapid Prototyping", "HRI", "Industrial Design"],
       gallery:[
@@ -203,7 +241,7 @@ const TRACKS = [
       ] },
     { name:"SONGGUO", desc:"AI mindfulness sleep-aid pillow — psychology-first sleep therapy in a consumer product",
       why:"More than 300 million people in China suffer from sleep disorders, 60% of them rooted in psychological factors — yet existing consumer sleep aids only treat symptoms mechanically. Songguo AI Sleep Pillow takes a psychology-first approach instead, translating professional-grade multi-sensory therapy into an AI mindfulness sleep-aid algorithm and a validated 5+1 sensory experience.",
-      bg:"#FCD116", gh:"", ai:true, live:"", image:"/songguo/cover.png",
+      bg:"#FCD116", gh:"", ai:true, live:"", image:"/songguo/cover.png", carousel:true,
       stack:["MBSR Algorithm","Sleep Monitoring","Hardware Design","AI Personalization","Product Strategy"],
       gallery:[
         { type:"group", title:"The Problem", solo:true, images:["/songguo/problem-disorders.png","/songguo/problem-market.png","/songguo/problem-comparison.png","/songguo/idea-chair.png"],
@@ -222,49 +260,45 @@ const TRACKS = [
           desc:"Songguo runs sales through international crowdfunding platforms and partners with tech- and health-focused self-media and KOLs/KOCs to build trust and community. As the venture grows, it aims to create 300+ new jobs across R&D, sales, and customer service, driving the broader sleep-aid industry forward. Songguo AI Sleep Pillow is entirely designed and built by our undergraduate team — carrying the mission to help China sleep well, sleep deeply, and love sleep again." }
       ] },
   ]},
-  { id:"graphic", label:"GRAPHIC DESIGN", short:"GRAPHIC", cover:"GRAPHIC\nDESIGN", color:"#3EAE2B", projects:[
+  { id:"visual", label:"VISUAL DESIGN", short:"VISUAL", cover:"VISUAL\nDESIGN", color:"#3EAE2B", projects:[
     { name:"OUTSEA", desc:"Podcast logo, merch & identity", bg:"#3EAE2B" },
     // { name:"XIAOCHUAN", desc:"Full brand — merch, video & collateral", bg:"#6B8E23" },
-    { name:"REACHINGFILM", desc:"Full brand — merch, video & collateral", bg:"#6B8E23" },
+    { name:"FILM SCREENING", desc:"Full brand — merch, video & collateral", bg:"#6B8E23" },
     // { name:"SHUIZHAOXI", desc:"Book design & art direction", bg:"#7CCD7C" },
     // { name:"SINOQUEER", desc:"Exhibition, zines, booklets & website", bg:"#2D8B46" },
     { name:"POSTER GALLERY", desc:"Event & recruitment posters for film screenings, reading seminars, and campus culture",
       why:"A recurring poster design practice spanning film club recruitment, screening events, reading seminars, and campus cultural programming — blending collage, typography, and print traditions like paper-cutting to give each event its own visual identity.",
       bg:"#4E9F3D", gh:"", ai:false, live:"https://www.notion.so/Graphic-Design-25b688c19f488127a1c7c52e67ba2c47",
-      image:"/images/2.jpg", stack:["Poster Design","Typography","Print Design","Event Branding"],
+      image:"/images/haodongxi.jpg", stack:["Poster Design","Typography","Print Design","Event Branding"],
       gallery:[
-        { type:"image", src:"/images/1.jpg", title:"Club Poster #1",
-          desc:"A recruitment poster reinterpreting iconic imagery from legendary musicians and cinematic masterpieces, blending cultural nostalgia with contemporary graphic layouts." },
-        { type:"image", src:"/images/3.jpg", title:"Club Poster #2",
-          desc:"A recruitment poster centering on a full-spectrum, rainbow-colored human figure, symbolizing radical inclusivity and diversity of the club." },
-        { type:"image", src:"/images/2.jpg", title:"House of Sand",
-          desc:"An official promotional poster featuring a groundbreaking typographic Wuxia figure composed entirely of kinetic text elements." },
-        { type:"image", src:"/images/4.jpg", title:"Timbuktu",
-          desc:"Film screening poster for Timbuktu." },
-        { type:"image", src:"/images/5.jpg", title:"Notes Underground",
-          desc:"A commemorative poster for the 200th anniversary of Dostoevsky's birth, for a reading seminar on Notes from Underground." },
-        { type:"image", src:"/images/6.jpg", title:"Blessing",
-          desc:"An evocative event poster for the Blessing reading seminar, themed Capturing Wandering Sounds." },
-        { type:"image", src:"/images/9.jpg", title:"Farewell Concubine",
-          desc:"A striking event poster designed for a screening of the cinematic masterpiece Farewell My Concubine." },
-        { type:"image", src:"/images/10.jpg", title:"Concubine Cover",
-          desc:"A bespoke program cover employing a traditional Chinese paper-cutting aesthetic, featuring Consort Yu and the Hegemon-King through intricate die-cut patterns." },
-        { type:"image", src:"/images/12.png", title:"Tie in Tides",
+        { type:"image", src:"/images/12.png", title:"Tie in Tides", h:58,
           desc:"An evocative event poster designed for the screening of the film Tie in Tides." },
-        { type:"image", src:"/images/13.jpg", title:"Printmaking",
-          desc:"A promotional poster for the Queer Spring Festival workshop, transforming classic red scrolls into a vibrant rainbow spectrum merging Lunar New Year symbols with LGBTQ+ identity." },
-        { type:"image", src:"/images/14.jpg", title:"Your Life #1",
-          desc:"Film screening poster for Your Life." },
-        { type:"image", src:"/images/15.jpg", title:"Your Life #2",
-          desc:"Film screening poster for Your Life." },
-        { type:"image", src:"/images/16.jpg", title:"Your Life #3",
-          desc:"Film screening poster for Your Life." },
-        { type:"image", src:"/images/11.jpg", title:"Ballroom Workshop",
+        { type:"image", src:"/images/2.jpg", title:"House of Sand", h:58,
+          desc:"An official promotional poster featuring a groundbreaking typographic Wuxia figure composed entirely of kinetic text elements." },
+        { type:"image", src:"/images/11.jpg", title:"Ballroom Workshop", h:58,
           desc:"A playful, cat-illustrated flyer for a Ballroom Workshop in Stockholm — sharing the history of Ballroom culture, a panel connecting Chinese and Scandinavian ballroom communities, and a hands-on Vogue Femme session open to all experience levels." },
-        { type:"image", src:"/images/haodongxi.jpg", title:"Film Screening",
-          desc:"Film screening poster." },
-        { type:"image", src:"/barebells.png", title:"Barebells Campaign",
-          desc:"A metro lightbox mockup from the Barebells \"Protein That Tastes Like Dessert\" brand campaign." },
+        { type:"image", src:"/images/13.jpg", title:"Printmaking", h:58,
+          desc:"A promotional poster for the Queer Spring Festival workshop, transforming classic red scrolls into a vibrant rainbow spectrum merging Lunar New Year symbols with LGBTQ+ identity." },
+        { type:"image", src:"/images/1.jpg", title:"Club Poster #1", h:58,
+          desc:"A recruitment poster reinterpreting iconic imagery from legendary musicians and cinematic masterpieces, blending cultural nostalgia with contemporary graphic layouts." },
+        { type:"image", src:"/images/3.jpg", title:"Club Poster #2", h:58,
+          desc:"A recruitment poster centering on a full-spectrum, rainbow-colored human figure, symbolizing radical inclusivity and diversity of the club." },
+        { type:"image", src:"/images/4.jpg", title:"Timbuktu", h:58,
+          desc:"Film screening poster for Timbuktu." },
+        { type:"image", src:"/images/5.jpg", title:"Notes Underground", h:58,
+          desc:"A commemorative poster for the 200th anniversary of Dostoevsky's birth, for a reading seminar on Notes from Underground." },
+        { type:"image", src:"/images/9.jpg", title:"Farewell Concubine", h:58,
+          desc:"A striking event poster designed for a screening of the cinematic masterpiece Farewell My Concubine." },
+        { type:"image", src:"/images/10.jpg", title:"Concubine Cover", h:58,
+          desc:"A bespoke program cover employing a traditional Chinese paper-cutting aesthetic, featuring Consort Yu and the Hegemon-King through intricate die-cut patterns." },
+        { type:"image", src:"/images/14.jpg", title:"Your Life #1", h:58,
+          desc:"Film screening poster for Your Life." },
+        { type:"image", src:"/images/15.jpg", title:"Your Life #2", h:58,
+          desc:"Film screening poster for Your Life." },
+        { type:"image", src:"/images/16.jpg", title:"Your Life #3", h:58,
+          desc:"Film screening poster for Your Life." },
+        { type:"image", src:"/images/6.jpg", title:"Blessing", h:58,
+          desc:"An evocative event poster for the Blessing reading seminar, themed Capturing Wandering Sounds." }
       ] },
     { name:"WINTER SWIMMING", desc:"Self-initiated literary magazine with experimental visual storytelling",
       why:"A self-initiated literary magazine with experimental visual storytelling layouts and custom illustrations, capturing collective memory of university life.",
@@ -799,18 +833,18 @@ export default function Portfolio() {
               {active.isAbout?[
                 <section key="about1" style={{width:"100vw",minWidth:"100vw",height:"100vh",backgroundColor:"#000",
                   scrollSnapAlign:"start",flexShrink:0,overflow:"hidden"}}>
-                  <img src="/about/about1.png" alt="Title screen" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                  <img src="/about/about1.png" alt="Title screen" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
                 </section>,
                 <section key="about2" style={{width:"100vw",minWidth:"100vw",height:"100vh",backgroundColor:"#000",
                   scrollSnapAlign:"start",flexShrink:0,overflow:"hidden"}}>
-                  <img src="/about/about2.png" alt="Bio dialogue" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                  <img src="/about/about2.png" alt="Bio dialogue" loading="lazy" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
                 </section>,
                 <section key="bio" style={{width:"100vw",minWidth:"100vw",height:"100vh",backgroundColor:active.color,
                   scrollSnapAlign:"start",display:"flex",alignItems:"center",justifyContent:"center",
                   padding:"0 6vw",flexShrink:0,overflow:"hidden"}}>
                   <div style={{display:"flex",gap:"4vw",alignItems:"center",justifyContent:"space-between",
                     width:"100%",maxWidth:1500,flexWrap:"wrap"}}>
-                    <img src="/images/zju2.jpg" alt="Graduation" style={{height:"50vh",width:"auto",
+                    <img src="/images/zju2.jpg" alt="Graduation" loading="lazy" style={{height:"50vh",width:"auto",
                       maxWidth:"100%",objectFit:"contain"}}/>
                     <div style={{maxWidth:460,flex:"1 1 380px"}}>
                       <div style={{display:"flex",gap:8,marginBottom:18,flexWrap:"wrap"}}>
@@ -848,9 +882,12 @@ export default function Portfolio() {
                 <section key="interests" style={{width:"100vw",minWidth:"100vw",height:"100vh",backgroundColor:active.color,
                   scrollSnapAlign:"start",display:"flex",alignItems:"center",justifyContent:"center",
                   padding:"5vh 6vw",flexShrink:0,overflow:"hidden"}}>
-                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20}}>
-                    <img src="/images/voguing.jpg" alt="Voguing" style={{height:"58vh",width:"auto",
+                  <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center",gap:16}}>
+                    <img src="/images/voguing.jpg" alt="Voguing" loading="lazy" style={{height:"46vh",width:"auto",
                       maxWidth:"100%",objectFit:"contain"}}/>
+                    <h1 style={{width:"100%",fontSize:"clamp(40px,10vw,160px)",fontWeight:900,
+                      letterSpacing:"-0.03em",lineHeight:0.9,textAlign:"center",margin:0,
+                      color:isDark(active.color)?"#000":"#fff"}}>INTEREST</h1>
                     <div style={{display:"flex",gap:8,flexWrap:"wrap",justifyContent:"center"}}>
                       {["#Film","#Voguing","#Climbing"].map(tag=>(
                         <span key={tag} style={{fontSize:13,fontWeight:600,color:isDark(active.color)?"#000":"#fff",
@@ -866,7 +903,9 @@ export default function Portfolio() {
                     dim=aiOnly&&!proj.ai,
                     ghPath=proj.gh&&(proj.gh.includes("/")?proj.gh:`${GH_USER}/${proj.gh}`);
                   const galleryChunks=[];
-                  if(proj.gallery){
+                  if(proj.carousel){
+                    galleryChunks.push(proj.gallery);
+                  }else if(proj.gallery){
                     let buf=[];
                     proj.gallery.forEach(g=>{
                       if(g.solo){
@@ -925,8 +964,10 @@ export default function Portfolio() {
                           <video src={proj.image} autoPlay loop muted playsInline style={{flex:"1 1 55%",minWidth:0,
                             maxWidth:"100%",maxHeight:"75vh"}}/>
                         ):(
-                          <img src={proj.image} alt={proj.name} style={{flex:"1 1 55%",minWidth:0,
-                            maxWidth:"100%",maxHeight:"75vh",objectFit:"contain"}}/>
+                          <img src={proj.image} alt={proj.name} loading="lazy" style={{flex:"1 1 55%",minWidth:0,
+                            maxWidth:"100%",maxHeight:proj.imageScale?`${75*proj.imageScale}vh`:"75vh",
+                            width:proj.imageScale?`${100*proj.imageScale}%`:undefined,
+                            margin:proj.imageScale?"0 auto":undefined,objectFit:"contain"}}/>
                         ))}
                       </div>
                       <div style={{position:"absolute",bottom:28,left:"4vw",fontSize:12,fontWeight:600,
@@ -942,44 +983,48 @@ export default function Portfolio() {
                           opacity:dim?0.25:1,transition:"opacity 0.3s ease"}}>
                           <div style={{width:"100%",maxWidth:1300,display:"flex",
                             flexWrap:"wrap",justifyContent:"center",alignItems:"flex-start",gap:"4vw"}}>
-                            {chunk.map(g=>{
+                            {proj.carousel?(
+                              <GalleryCarousel items={chunk} fg={fg} sub={sub}/>
+                            ):chunk.map(g=>{
                               if(g.type==="group"){
                                 const n=g.images.length,
-                                  gh=n>=4?"18vh":n===3?"22vh":n===2?"32vh":"52vh";
+                                  gh=n>=4?"18vh":n===3?"22vh":n===2?"32vh":"52vh",
+                                  gmw=`${Math.floor(88/n)}vw`;
                                 return(
                                   <div key={g.title} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,width:"100%"}}>
                                     <h3 style={{fontSize:"clamp(20px,2vw,30px)",fontWeight:800,color:fg,margin:0}}>{g.title}</h3>
                                     <div style={{display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"flex-start",gap:"1.5vw",width:"100%"}}>
                                       {g.images.map(src=>(
-                                        <img key={src} src={src} alt={g.title} style={{height:gh,width:"auto",maxWidth:"100%"}}/>
+                                        <img key={src} src={src} alt={g.title} loading="lazy" style={{height:gh,width:"auto",maxWidth:gmw}}/>
                                       ))}
                                     </div>
                                     <p style={{fontSize:14,lineHeight:1.7,color:sub,maxWidth:760,textAlign:"center",margin:0}}>{g.desc}</p>
                                   </div>
                                 );
                               }
-                              const h=g.h?`${g.h}vh`:(solo?"72vh":"42vh");
+                              const h=g.h?`${g.h}vh`:(solo?"72vh":"42vh"),
+                                pairMaxW=chunk.length>1?"44vw":"92vw";
                               return(
                               <div key={g.title} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
                                 {g.type==="embed"?(
                                   <LazyIframe src={g.src} title={g.title} style={{width:"84vw",height:"78vh",maxWidth:"100%",border:"none"}}/>
                                 ):g.type==="youtube"?(
                                   <LazyIframe src={g.src} title={g.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen
-                                    style={{height:h,width:"auto",aspectRatio:"16/9",maxWidth:"100%",border:"none"}}/>
+                                    style={{height:h,width:"auto",aspectRatio:"16/9",maxWidth:pairMaxW,border:"none"}}/>
                                 ):g.type==="video"?(
                                   solo?(
                                     <video src={g.src} poster={g.poster} autoPlay loop muted playsInline
                                       style={{maxHeight:h,maxWidth:"100%"}}/>
                                   ):(
                                     <video src={g.src} poster={g.poster} autoPlay loop muted playsInline
-                                      style={{height:h,width:"auto",maxWidth:"100%",objectFit:"contain"}}/>
+                                      style={{height:h,width:"auto",maxWidth:pairMaxW,objectFit:"contain"}}/>
                                   )
                                 ):(
                                   solo?(
-                                    <img src={g.src} alt={g.title} style={{maxHeight:h,maxWidth:"100%"}}/>
+                                    <img src={g.src} alt={g.title} loading="lazy" style={{maxHeight:h,maxWidth:"100%"}}/>
                                   ):(
-                                    <img src={g.src} alt={g.title} style={{height:h,width:"auto",
-                                      maxWidth:"100%",objectFit:"contain"}}/>
+                                    <img src={g.src} alt={g.title} loading="lazy" style={{height:h,width:"auto",
+                                      maxWidth:pairMaxW,objectFit:"contain"}}/>
                                   )
                                 )}
                                 <h3 style={{fontSize:solo?"clamp(20px,2vw,30px)":"clamp(16px,1.6vw,24px)",fontWeight:800,color:fg,margin:0}}>{g.title}</h3>
