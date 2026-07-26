@@ -80,7 +80,7 @@ const TRACKS = [
         { type:"video", src:"/barebells/barebells.mp4", title:"Live Campaign Video",
           desc:"" },
         // { type:"embed", src:"https://lesley-qing-gu.github.io/barebellsdesigncase/", title:"Live Interactive Site", solo:true, desc:"" }
-        { type:"image", src:"/barebells/HowIMade.png", title:"How I Made It", solo:true,
+        { type:"image", src:"/barebells/HowIMade.png", title:"How I Made It", solo:true, layout:"side",
           desc:"Posters were designed in Lovart and polished with GPT Image, then adapted across formats using Lovart's templates. The campaign video was storyboarded with Claude, generated frame-by-frame in GPT Image, and animated with Kling AI. The 3D product model came from Meshy AI, rendered live with Three.js — and the whole interactive site was built with Amazon Q, GSAP, and Lenis." },
       ] },
     { name:"PAPERBULLET", desc:"Film criticism & editorial platform with a serverless CMS",
@@ -999,6 +999,24 @@ export default function Portfolio() {
                                       ))}
                                     </div>
                                     <p style={{fontSize:14,lineHeight:1.7,color:sub,maxWidth:760,textAlign:"center",margin:0}}>{g.desc}</p>
+                                  </div>
+                                );
+                              }
+                              if(g.layout==="side"){
+                                return(
+                                  <div key={g.title} style={{width:"100%",maxWidth:1300,display:"flex",
+                                    gap:"4vw",alignItems:"center",flexWrap:"wrap"}}>
+                                    {g.type==="video"?(
+                                      <video src={g.src} poster={g.poster} autoPlay loop muted playsInline
+                                        style={{flex:"1 1 50%",minWidth:280,maxWidth:"100%",maxHeight:"65vh"}}/>
+                                    ):(
+                                      <img src={g.src} alt={g.title} loading="lazy" style={{flex:"1 1 50%",minWidth:280,
+                                        maxWidth:"100%",maxHeight:"65vh",objectFit:"contain"}}/>
+                                    )}
+                                    <div style={{flex:"1 1 40%",minWidth:280}}>
+                                      <h3 style={{fontSize:"clamp(22px,2.4vw,34px)",fontWeight:800,color:fg,margin:"0 0 16px 0"}}>{g.title}</h3>
+                                      <p style={{fontSize:15,lineHeight:1.7,color:sub,margin:0}}>{g.desc}</p>
+                                    </div>
                                   </div>
                                 );
                               }
