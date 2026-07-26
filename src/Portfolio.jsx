@@ -105,7 +105,12 @@ const TRACKS = [
       why:"As a dedicated cinephile, I manage SOLARIS — a Chinese cinephile collective dedicated to the discussion and exploration of cinema. I built this site to serve as an evolving archive for our film ratings, score sheets, and editorial content. To streamline our editorial workflow, I developed custom tools to bridge data and design: one plugin fetches movie metadata as JSON to sync with the website, while a custom Figma plugin automatically populates selected design templates using this JSON data. Coupled with Node.js scripts for data processing and static HTML generation for SEO, the platform runs on a highly automated, self-sustaining pipeline.",
       bg:"#BA1826", gh:"solaris-site", ai:false, live:"https://solaris-cinema.art/",
       image:"/images/solaris.mp4", stack:["React", "TypeScript", "Tailwind CSS", "Node.js", "Figma Plugin API", "SEO"],
-      gallery:[] },
+      gallery:[
+        { type:"image", src:"/images/json.png", title:"Data Fetching & Sync Plugin",
+          desc:"A custom tool that fetches movie metadata in JSON format and seamlessly syncs it to the website's data pipeline." },
+        { type:"image", src:"/images/chajian.png", title:"Automated Figma Layout Generator",
+          desc:"A workflow plugin that reads the JSON movie data and automatically populates selected Figma templates for rapid, consistent score sheet design." },
+      ] },
     { name:"SVENSKA LYSSNA", desc:"AI-powered Swedish audio learning with real-time sync & interactive dictionary",
       why:"Learning a new language through audio is powerful but hard to review. Svenska Lyssna turns any Swedish audio into an interactive study tool. Powered by Gemini 3 Flash, it features highly accurate transcription, real-time sentence highlighting synced to playback, and an interactive dictionary for instant IPA and multi-language translations.",
       bg:"#9A031E", gh:"SvenskaLyssna", ai:true, live:"https://ai.studio/apps/2261bbb3-61a1-433c-9979-faf78eec3ee2?fullscreenApplet=true", image:"/images/svenskalyssna.mp4",
