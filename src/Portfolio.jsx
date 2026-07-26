@@ -86,11 +86,11 @@ const TRACKS = [
     { name:"PAPERBULLET", desc:"Film criticism & editorial platform with a serverless CMS",
       why: "Small independent media outlets often struggle with server maintenance costs. PaperBullet was built for a Chinese independent film media team to cover overseas film festivals. Designed as a pure frontend application, it completely eliminates backend server costs while still functioning as a robust CMS. Editors can log in via a password and use a familiar, Word-like rich text editor to easily publish, modify, and delete articles, reports, and rating charts on the go.",
       bg:"#C1121F", gh:"paperbullet", ai:false, live:"https://lesley-qing-gu.github.io/paperbullet/",
-      image:"/paperbullet/home.png", stack:["React","TypeScript","Vite","Tailwind CSS","Framer Motion"],
+      image:"/paperbullet-media/home.png", stack:["React","TypeScript","Vite","Tailwind CSS","Framer Motion"],
       gallery:[
-        { type:"video", src:"/paperbullet/report.mp4", title:"Festival Reports & Rating Charts",
+        { type:"video", src:"/paperbullet-media/report.mp4", title:"Festival Reports & Rating Charts",
           desc:"Interactive viewing of comprehensive overseas film festival coverage and critic rating grids." },
-        { type:"video", src:"/paperbullet/admin.mp4", title:"Serverless Admin CMS",
+        { type:"video", src:"/paperbullet-media/admin.mp4", title:"Serverless Admin CMS",
           desc:"A password-protected dashboard allowing editors to manage content through a seamless, Word-style text editor without a traditional backend." },
       ] },
     { name:"OUTSEA", desc:"Visually-driven, archive-focused website for my independent film podcast", 
@@ -1025,7 +1025,7 @@ export default function Portfolio() {
                                   </div>
                                 );
                               }
-                              const h=g.h?`${g.h}vh`:(solo?"72vh":"42vh"),
+                              const h=g.h?`${g.h}vh`:(solo?"72vh":"36vh"),
                                 pairMaxW=chunk.length>1?"44vw":"92vw";
                               return(
                               <div key={g.title} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
