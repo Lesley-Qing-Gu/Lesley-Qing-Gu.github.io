@@ -271,8 +271,8 @@ const TRACKS = [
       bg:"#2A9D8F", gh:"", ai:false, live:"", image:"/film/cover.jpg",
       stack:["Independent Cinema","Exhibition Design","Editorial Design","Curatorial Text"],
       gallery:[
-        { type:"group", solo:true, title:"Poster, Program Book & Schedule", images:["/film/poster.jpg","/film/changkan.jpg","/film/timetable.jpg"] },
-        { type:"group", solo:true, title:"Ticket Stubs", images:["/film/Group 8.jpg","/film/Group 9.jpg","/film/Group 10.jpg","/film/Group 11.jpg"] },
+        { type:"group", solo:true, title:"Poster, Program Book & Schedule", h:50, images:["/film/poster.jpg","/film/changkan.jpg","/film/timetable.jpg"] },
+        { type:"group", solo:true, title:"Ticket Stubs", h:24, images:["/film/Group 8.jpg","/film/Group 9.jpg","/film/Group 10.jpg","/film/Group 11.jpg"] },
         { type:"image", src:"/film/zhoubian.jpg", title:"Merchandise" }
       ] },
     { name:"POSTER GALLERY", desc:"Event & recruitment posters for film screenings, reading seminars, and campus culture",
@@ -890,9 +890,11 @@ export default function Portfolio() {
                       <p style={{fontSize:17,lineHeight:1.8,
                         color:isDark(active.color)?"rgba(0,0,0,0.75)":"rgba(255,255,255,0.9)",
                         margin:0,fontWeight:400}}>
-                        I engineer AI-forward, accessible systems that resonate across diverse human experiences.
-                        I blend a filmmaker's storytelling with a dancer's heightened sensitivity to ensure the
-                        future of tech is not just smart, but fundamentally human-centric.
+                        I'm a designer who codes, and an engineer who designs. My love for film and voguing
+                        shaped how I see the world — always looking for rhythm, story, and feeling in everything
+                        I build. I care deeply about people, and I believe the best things we make are the ones
+                        everyone can enjoy, regardless of who they are or what they can do. I try to be the most
+                        design-minded coder and the most code-literate designer I can be. Stay curious. Stay in love.
                       </p>
                       <p style={{fontSize:12,fontWeight:500,letterSpacing:"0.02em",marginTop:18,lineHeight:1.6,
                         color:isDark(active.color)?"rgba(0,0,0,0.5)":"rgba(255,255,255,0.55)"}}>
@@ -1021,7 +1023,7 @@ export default function Portfolio() {
                             ):chunk.map(g=>{
                               if(g.type==="group"){
                                 const n=g.images.length,
-                                  gh=n>=4?"18vh":n===3?"22vh":n===2?"32vh":"52vh",
+                                  gh=g.h?`${g.h}vh`:(n>=4?"18vh":n===3?"22vh":n===2?"32vh":"52vh"),
                                   gmw=`${Math.floor(88/n)}vw`;
                                 return(
                                   <div key={g.title} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:20,width:"100%"}}>
